@@ -8,12 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display profile page.
-     */
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -21,26 +19,18 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-
         $validated = $request->validated();
 
         if ($request->hasFile('profile_picture')) {
-
-            $imageName = time() . '.' .
-                $request->profile_picture->extension();
-
-            $request->profile_picture->move(
-                public_path('profile_pictures'),
-                $imageName
+            $uploadedFile = Cloudinary::upload(
+                $request->file('profile_picture')->getRealPath(),
+                ['folder' => 'profile_pictures']
             );
 
-            $validated['profile_picture'] = $imageName;
+            $validated['profile_picture'] = $uploadedFile->getSecurePath();
         }
 
         $user->update($validated);
@@ -49,9 +39,6 @@ class ProfileController extends Controller
             ->with('success', 'Profile updated successfully.');
     }
 
-    /**
-     * Delete account.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([
@@ -59,13 +46,9 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-
         Auth::logout();
-
         $user->delete();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
