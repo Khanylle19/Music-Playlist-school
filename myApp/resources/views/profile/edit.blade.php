@@ -18,7 +18,7 @@
             <div class="mb-3 text-center">
                 @if(auth()->user()->profile_picture)
                     <img
-                        src="{{ asset('profile_pictures/' . auth()->user()->profile_picture) }}"
+                        src="{{ auth()->user()->profile_picture }}"
                         width="120"
                         height="120"
                         class="rounded-circle mb-3"
