@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Cloudinary;
+use Cloudinary\Configuration\Configuration;
 
 class ProfileController extends Controller
 {
@@ -25,12 +26,25 @@ class ProfileController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('profile_picture')) {
-            $uploadedFile = Cloudinary::upload(
+            $cloudinary = new Cloudinary(
+                Configuration::instance([
+                    'cloud' => [
+                        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                        'api_key'    => env('CLOUDINARY_API_KEY'),
+                        'api_secret' => env('CLOUDINARY_API_SECRET'),
+                    ],
+                    'url' => [
+                        'secure' => true
+                    ]
+                ])
+            );
+
+            $result = $cloudinary->uploadApi()->upload(
                 $request->file('profile_picture')->getRealPath(),
                 ['folder' => 'profile_pictures']
             );
 
-            $validated['profile_picture'] = $uploadedFile->getSecurePath();
+            $validated['profile_picture'] = $result['secure_url'];
         }
 
         $user->update($validated);
