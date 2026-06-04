@@ -8,7 +8,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Playlist Management System</title>
+<title>Music Playlist</title>
 
 <!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -27,18 +27,14 @@
 
     <a class="navbar-brand fw-bold"
        href="{{ route('dashboard') }}">
-
-        Playlist System
-
+        Music Playlist
     </a>
 
     <button class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav">
-
         <span class="navbar-toggler-icon"></span>
-
     </button>
 
     <div class="collapse navbar-collapse"
@@ -76,23 +72,36 @@
 
         </ul>
 
-        <span class="text-white me-3">
-            {{ auth()->user()->name ?? '' }}
-        </span>
-
         @auth
+        <a href="{{ route('profile.edit') }}" class="me-3">
+            @if(auth()->user()->profile_picture)
+                <img
+                    src="{{ auth()->user()->profile_picture }}"
+                    width="38"
+                    height="38"
+                    class="rounded-circle border border-2 border-white"
+                    alt="Profile Picture"
+                    style="object-fit: cover;"
+                >
+            @else
+                <img
+                    src="https://via.placeholder.com/38"
+                    width="38"
+                    height="38"
+                    class="rounded-circle border border-2 border-white"
+                    alt="Default Profile"
+                    style="object-fit: cover;"
+                >
+            @endif
+        </a>
 
         <form method="POST"
               action="{{ route('logout') }}">
-
             @csrf
-
             <button class="btn btn-danger btn-sm">
                 Logout
             </button>
-
         </form>
-
         @endauth
 
     </div>
