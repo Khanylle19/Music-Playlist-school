@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Music Playlist</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     body {
         background-color: #f8f9fa;
@@ -101,7 +100,7 @@
                          style="object-fit: cover;"
                          alt="Profile">
                 @else
-                    <img src="https://via.placeholder.com/36"
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=36&background=212529&color=fff&rounded=true"
                          width="36" height="36"
                          class="rounded-circle border"
                          style="object-fit: cover;"
@@ -124,32 +123,38 @@
 @yield('content')
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @if(session('success'))
 <script>
-Swal.fire({
-    toast: true,
-    position: 'top-end',
-    icon: 'success',
-    title: "{{ session('success') }}",
-    showConfirmButton: false,
-    timer: 3000
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: "{{ session('success') }}",
+        showConfirmButton: false,
+        timer: 3000
+    });
 });
 </script>
 @endif
 
 @if(session('error'))
 <script>
-Swal.fire({
-    toast: true,
-    position: 'top-end',
-    icon: 'error',
-    title: "{{ session('error') }}",
-    showConfirmButton: false,
-    timer: 3000
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: "{{ session('error') }}",
+        showConfirmButton: false,
+        timer: 3000
+    });
 });
 </script>
 @endif
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
