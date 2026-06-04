@@ -21,6 +21,7 @@
 
 <body class="bg-light">
 
+@auth
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
 
 <div class="container">
@@ -72,7 +73,6 @@
 
         </ul>
 
-        @auth
         <a href="{{ route('profile.edit') }}" class="me-3">
             @if(auth()->user()->profile_picture)
                 <img
@@ -102,13 +102,13 @@
                 Logout
             </button>
         </form>
-        @endauth
 
     </div>
 
 </div>
 
 </nav>
+@endauth
 
 <div class="container py-4">
 
